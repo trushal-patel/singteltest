@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:orientation="vertical"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    >
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
@@ -20,14 +21,113 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/content_main" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/dp16"
+        android:orientation="vertical">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/tv_title_select_option" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <RadioGroup
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/rdo_btn_text_precessing"
+                android:layout_width="wrap_content"
+                android:checked="true"
+                android:text="@string/tv_title_text_processing"
+                android:layout_height="wrap_content" />
+            <RadioButton
+                android:id="@+id/rdo_btn_maths_operation"
+                android:layout_width="wrap_content"
+                android:text="@string/tv_title_maths_operation"
+                android:layout_height="wrap_content" />
+
+        </RadioGroup>
+
+        <LinearLayout
+            android:id="@+id/ll_maths"
+            android:visibility="gone"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:weightSum="3"
+                android:orientation="horizontal"
+                android:layout_margin="@dimen/dp8"
+
+                android:gravity="center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <EditText
+                android:layout_margin="@dimen/dp8"
+                android:id="@+id/edt_input1"
+                android:hint="@string/hint_input"
+                android:inputType="numberDecimal"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                />
+            <Spinner
+                android:layout_margin="@dimen/dp8"
+                android:id="@+id/spn_option"
+                android:layout_width="wrap_content"
+                android:entries="@array/array_math_operation"
+                android:layout_height="wrap_content"/>
+
+            <EditText
+                android:layout_margin="@dimen/dp8"
+                android:id="@+id/edt_input2"
+                android:hint="@string/hint_input"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:inputType="numberDecimal"
+                android:layout_height="wrap_content"
+                />
+            </LinearLayout>
+            <Button
+                android:id="@+id/btn_calculate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_title_submit" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/ll_text_processiong"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/tv_title_please_enter_input_text_below" />
+
+            <EditText
+                android:id="@+id/edt_input"
+                android:hint="@string/hint_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+
+            <Button
+                android:id="@+id/btn_submit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_title_submit" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>
