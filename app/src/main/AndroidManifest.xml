@@ -19,10 +19,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
-                <action android:name="com.app.stel.PROCESS_TEXT"/>
+                <action android:name="com.app.stel.action_PROCESS_MATH"/>
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+            <intent-filter>
+            <action android:name="com.app.stel.action_PROCESS_TEXT"/>
+            <category android:name="android.intent.category.DEFAULT" />
+        </intent-filter>
         </activity>
     </application>
-
 </manifest>

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="server_url">https://postman-echo.com/post</string>
-    <string name="parameter">data</string>
+    <string name="server_url_text_process">https://postman-echo.com/post</string>
+    <string name="parameter_text_process">data</string>
+
+    <string name="server_url_math">https://api.mathjs.org/v4/</string>
+    <string name="parameter_math">expr</string>
 
 </resources>
