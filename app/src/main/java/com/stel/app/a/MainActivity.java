@@ -18,12 +18,10 @@ import java.net.URLEncoder;
 
 public class MainActivity extends AppCompatActivity {
 
-    public final static String ACTION_GET_RESULTS="com.app.stel.action_PROCESS_TEXT";
+    public final static String ACTION_PROCESS_TEXT="com.app.stel.action_PROCESS_TEXT";
     public final static String ACTION_MATH_OPERATION="com.app.stel.action_PROCESS_MATH";
 
     public final static String EXTRA_PARAM_INPUT1="input1";
-    public final static String EXTRA_PARAM_INPUT2="input2";//only useful for maths operations
-
 
     public  final static int REQUEST_PROCESS_TEXT=100;
     public  final static int REQUEST_PROCESS_MATH=101;
@@ -54,7 +52,8 @@ public class MainActivity extends AppCompatActivity {
                     edtInput.setError(getString(R.string.error_message_please_enter_the_text));
                     return;
                 }
-                Intent intent=new Intent(ACTION_GET_RESULTS);
+
+                Intent intent=new Intent(ACTION_PROCESS_TEXT);
                 intent.putExtra(EXTRA_PARAM_INPUT1,input);
                 startActivityForResult(intent,REQUEST_PROCESS_TEXT);
             }
@@ -81,10 +80,9 @@ public class MainActivity extends AppCompatActivity {
                     error++;
                 }
 
-
                 String selectedOpertion= getResources().getStringArray(R.array.array_math_operation)[((Spinner) findViewById(R.id.spn_option)).getSelectedItemPosition()];
                 if(error==0) {
-                    expression=input1+ URLEncoder.encode(selectedOpertion)+input2;
+                    expression=input1+ selectedOpertion +input2+"=";
                     Intent intent = new Intent(ACTION_MATH_OPERATION);
                     intent.putExtra(EXTRA_PARAM_INPUT1, input1+ URLEncoder.encode(selectedOpertion)+input2);
                     startActivityForResult(intent, REQUEST_PROCESS_MATH);
@@ -105,7 +103,12 @@ public class MainActivity extends AppCompatActivity {
                 {
                     new AlertDialog.Builder(MainActivity.this).setTitle(getString(R.string.title_text_received))
                             .setMessage(data.getStringExtra(EXTRA_PARAM_INPUT1)).setPositiveButton(getString(R.string.btn_title_ok),null).create().show();
+                } else {
+                    //TODO we can show error message.
                 }
+            } else
+            {
+                //TODO we can show error message.
             }
         }else  if(requestCode==REQUEST_PROCESS_MATH)
         {
@@ -113,9 +116,15 @@ public class MainActivity extends AppCompatActivity {
             {
                 if(data.hasExtra(EXTRA_PARAM_INPUT1))
                 {
-                    new AlertDialog.Builder(MainActivity.this).setTitle(getString(R.string.title_results))
-                            .setMessage(expression+"="+data.getStringExtra(EXTRA_PARAM_INPUT1)).setPositiveButton(getString(R.string.btn_title_ok),null).create().show();
+                    new AlertDialog.Builder(MainActivity.this).setTitle(expression)
+                            .setMessage(data.getStringExtra(EXTRA_PARAM_INPUT1)).setPositiveButton(getString(R.string.btn_title_ok),null).create().show();
+                } else
+                {
+                    //TODO we can show error message.
                 }
+            } else
+            {
+                //TODO we can show error message.
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
