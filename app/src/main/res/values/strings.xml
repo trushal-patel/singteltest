@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">AppLocalization</string>
+    <string name="title_hello_world">Hello World</string>
+</resources>
