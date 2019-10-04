@@ -1,8 +1,5 @@
 package com.stel.app.b;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -15,13 +12,8 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class MainActivity extends Activity {
+public class TextOperationActivity extends MyBaseActivity {
 
-    public final static String ACTION_GET_RESULTS="com.app.stel.action_PROCESS_TEXT";
-    public final static String ACTION_MATH_OPERATION="com.app.stel.action_PROCESS_MATH";
-
-    public final static String EXTRA_PARAM_INPUT1="input1";
-    public final static String EXTRA_PARAM_INPUT2="input2";//for future use
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,11 +21,6 @@ public class MainActivity extends Activity {
         if(getIntent().getAction().equals(ACTION_GET_RESULTS))
         {
             ProcessTextHandler serverCallHandler = new ProcessTextHandler();
-            serverCallHandler.execute(getIntent().getStringExtra(EXTRA_PARAM_INPUT1));
-            //finish();
-        } if(getIntent().getAction().equals(ACTION_MATH_OPERATION))
-        {
-            ProcessMATHHandler serverCallHandler = new ProcessMATHHandler();
             serverCallHandler.execute(getIntent().getStringExtra(EXTRA_PARAM_INPUT1));
             //finish();
         } else
@@ -57,6 +44,9 @@ public class MainActivity extends Activity {
         @Override
         protected String doInBackground(String[] input)
         {
+            if(!isConnected())
+                return  "Failed: No network Connection !!";
+
             String parameter=getString(R.string.parameter_text_process);
             RequestBody requestBody = new MultipartBody.Builder()
                     .setType(MultipartBody.FORM)
@@ -70,8 +60,7 @@ public class MainActivity extends Activity {
                 Response response = client.newCall(request).execute();
 
                 String json= response.body().string();
-
-//                Sample OutPut
+//                OutPut Format
 //                {
 //                    "args": {},
 //                    "data": {},
@@ -91,94 +80,23 @@ public class MainActivity extends Activity {
 //                    "json": null,
 //                        "url": "https://postman-echo.com/post"
 //                }
-                return new JSONObject(json).getJSONObject("form").getString(parameter);
+                return new JSONObject(json).getJSONObject("form").getString(parameter) +" "+( SettingStore.getInstance(TextOperationActivity.this).getCallCounter());
             }catch (Exception e){
                 e.printStackTrace();
             }
-            return  "";
+            /// TODO handle all cases of server error responses
+            return  "Service unreachable. Please try again later.";
         }
 
         @Override
         protected void onPostExecute(String s)
         {
-            hideProgressDialog();
-            super.onPostExecute(s);
-            returnResults(s + SettingStore.getInstance(MainActivity.this).getCallCounter());
-            finish();
-        }
-
-
-
-    }
-
-
-    public class ProcessMATHHandler extends AsyncTask<String,Void,String>
-    {
-        @Override
-        protected void onPreExecute() {
-            showProgressDialog("Calculating....");
-            super.onPreExecute();
-        }
-
-        String expression;
-        @Override
-        protected String doInBackground(String[] input)
-        {
-            expression=input[0];
-//            https://api.mathjs.org/v4/?expr=2^8
-            String parameter=getString(R.string.parameter_math);
-            Request request = new Request.Builder().url(getString(R.string.server_url_math)+"?"+parameter+"="+input[0])
-                    .get().build();
-            try {
-                OkHttpClient client =new OkHttpClient();
-                Response response = client.newCall(request).execute();
-                return response.body().string();
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-            return  "Server Error";
-        }
-
-        @Override
-        protected void onPostExecute(String s)
-        {
-            hideProgressDialog();
-            super.onPostExecute(s);
             returnResults(s);
+            hideProgressDialog();
+            super.onPostExecute(s);
             finish();
         }
     }
-
-    void returnResults(String output)
-    {
-        Intent intent=new Intent();
-        intent.putExtra(EXTRA_PARAM_INPUT1,output);
-        setResult(RESULT_OK,intent);
-    }
-
-
-    ProgressDialog mProgressDialog;
-    void showProgressDialog(String message)
-    {
-        if(mProgressDialog==null) {
-            // May be previous progress-bar still active
-            hideProgressDialog();
-        }
-        mProgressDialog = ProgressDialog.show(MainActivity.this, "", message);
-    }
-
-    void hideProgressDialog()
-    {
-        try {
-            if (mProgressDialog != null && mProgressDialog.isShowing()) {
-                mProgressDialog.dismiss();
-                mProgressDialog = null;
-            }
-        }catch(Exception e){
-
-        }
-    }
-
 
 
 

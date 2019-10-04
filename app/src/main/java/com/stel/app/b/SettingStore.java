@@ -29,7 +29,8 @@ class SettingStore
     {
         final String PREF_COUNTER = "pref_counter";
         int count= pref.getInt(PREF_COUNTER,1);
-        //Let's Auto increment count by 1.
+        // To Avoid Extra call
+        // Let's Auto increment count by 1.
         pref.edit().putInt(PREF_COUNTER,count+1).apply();
         return count;
     }

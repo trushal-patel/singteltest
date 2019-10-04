@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.stel.app.b">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
@@ -11,21 +12,29 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true" >
         <activity
-            android:name=".MainActivity"
+            android:name=".TextOperationActivity"
             android:label="@string/app_name"
+            android:configChanges="orientation|screenSize|keyboardHidden"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
+                <action android:name="com.app.stel.action_PROCESS_TEXT"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MathOperationActivity"
+            android:label="@string/app_name"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen">
+            <intent-filter>
                 <action android:name="com.app.stel.action_PROCESS_MATH"/>
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-            <intent-filter>
-            <action android:name="com.app.stel.action_PROCESS_TEXT"/>
-            <category android:name="android.intent.category.DEFAULT" />
-        </intent-filter>
         </activity>
+
     </application>
 </manifest>
