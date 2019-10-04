@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -27,10 +26,35 @@
         />
 
     <Button
+        android:tag="en"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@"
+        android:onClick="doTranslate"
+        android:text="@string/english"
         />
 
+    <Button
+        android:tag="de"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dutch"
+        android:onClick="doTranslate"
 
+        />
+
+    <Button
+        android:tag="hi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/hindi"
+        android:onClick="doTranslate"
+        />
+
+    <Button
+        android:tag="ja"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/japanese"
+        android:onClick="doTranslate"
+        />
 </LinearLayout>

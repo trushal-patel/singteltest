@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Upload file to my personal G-drive. Available at below link-->
+    <string name="csv_url" translatable="false">https://drive.google.com/uc?export=download&amp;id=1AaoHbKy9waCJ6wEKV1P9ctWfbDExxuDQ</string>
+    <string name="japanese" translatable="false">Japanese</string>
+    <string name="hindi" translatable="false">Hindi</string>
+    <string name="dutch" translatable="false">Dutch</string>
+</resources>
