@@ -80,11 +80,11 @@ public class MainActivity extends AppCompatActivity {
                     error++;
                 }
 
-                String selectedOpertion= getResources().getStringArray(R.array.array_math_operation)[((Spinner) findViewById(R.id.spn_option)).getSelectedItemPosition()];
+                String selectedOperation= getResources().getStringArray(R.array.array_math_operation)[((Spinner) findViewById(R.id.spn_option)).getSelectedItemPosition()];
                 if(error==0) {
-                    expression=input1+ selectedOpertion +input2+"=";
+                    expression=input1+ selectedOperation +input2+"=";
                     Intent intent = new Intent(ACTION_MATH_OPERATION);
-                    intent.putExtra(EXTRA_PARAM_INPUT1, input1+ URLEncoder.encode(selectedOpertion)+input2);
+                    intent.putExtra(EXTRA_PARAM_INPUT1, input1+ URLEncoder.encode(selectedOperation)+input2);
                     startActivityForResult(intent, REQUEST_PROCESS_MATH);
                 }
             }
