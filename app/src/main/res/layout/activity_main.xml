@@ -19,12 +19,16 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <TextView
+    <com.stel.app.local.view.LanguageTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/title_hello_world"
         />
-
+    <!--<com.stel.app.local.view.LanguageTextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="@string/title_hello_world1"-->
+        <!--/>-->
     <Button
         android:tag="en"
         android:layout_width="wrap_content"
@@ -55,6 +59,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/japanese"
+        android:onClick="doTranslate"
+        />
+
+    <Button
+        android:tag="gu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Gujarati"
         android:onClick="doTranslate"
         />
 </LinearLayout>

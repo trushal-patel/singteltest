@@ -1,4 +1,4 @@
-package com.stel.app.local;
+package com.stel.app.local.util;
 
 public interface FileDownloadListner
 {

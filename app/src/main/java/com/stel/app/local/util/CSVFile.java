@@ -1,4 +1,4 @@
-package com.stel.app.local.thirdparty;
+package com.stel.app.local.util;
 
 import java.io.BufferedReader;
 import java.io.File;

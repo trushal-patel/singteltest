@@ -1,3 +1,5 @@
 <resources>
     <string name="title_hello_world">Bonjour le monde</string>
+    <string name="title_hello_world1">Hello World fr</string>
+
 </resources>
