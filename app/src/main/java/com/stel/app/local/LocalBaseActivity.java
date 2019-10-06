@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;s
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.stel.app.local.util.LanguageUtility;
 
