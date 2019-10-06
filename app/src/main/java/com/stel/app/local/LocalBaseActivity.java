@@ -134,7 +134,6 @@ public class LocalBaseActivity extends AppCompatActivity
     {
         // May be previous progress-bar still active
         hideProgressDialog();
-
         mProgressDialog = ProgressDialog.show(this, "", getString(R.string.message_progress_downloding_file));
     }
 

@@ -24,7 +24,7 @@ public class TextActivity extends LocalBaseActivity {
                 @Override
                 public void run()
                 {
-                    if(!isFinishing() && !isDestroyed() && MainActivity.instance==null) {
+                    if(!isFinishing() && !isDestroyed() && MainActivity.localInstance==null) {
                         startActivity(new Intent(getBaseContext(), MainActivity.class));
                     }
                 }

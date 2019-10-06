@@ -14,11 +14,11 @@ import com.stel.app.local.util.LanguageUtility;
 
 public class  MainActivity extends LocalBaseActivity {
 
-    public static Object instance;
+    public static Object localInstance;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        instance=this;
+        localInstance=this;
         setContentView(R.layout.activity_main);
         if(!(LanguageUtility.getInstance().isFileDownloaded(this)))
         {
@@ -80,6 +80,6 @@ public class  MainActivity extends LocalBaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        instance=null;
+        localInstance=null;
     }
 }

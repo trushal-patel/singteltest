@@ -20,11 +20,11 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <TextView android:layout_width="match_parent"
-        android:text="This is addtional test screen will stay in background. Mainactivity will open on this screen."
+        android:text="@string/title_message"
         android:layout_height="wrap_content"/>
 
     <LinearLayout
-        android:layout_marginTop="@dimen/fab_margin"
+        android:layout_marginTop="@dimen/dp16"
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:gravity="center"
@@ -32,7 +32,7 @@
 
         <com.stel.app.local.view.LanguageTextView
             android:layout_width="wrap_content"
-            android:layout_margin="@dimen/fab_margin"
+            android:layout_margin="@dimen/dp16"
             android:id="@string/title_hello_world"
             android:layout_height="wrap_content"
             android:text="@string/title_hello_world"
@@ -40,7 +40,7 @@
 
         <com.stel.app.local.view.LanguageTextView
             android:layout_width="wrap_content"
-            android:layout_margin="@dimen/fab_margin"
+            android:layout_margin="@dimen/dp16"
             android:id="@string/title_hello_world"
             android:layout_height="wrap_content"
             android:text="@string/title_hello_world"
@@ -48,24 +48,24 @@
         <com.stel.app.local.view.LanguageTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/fab_margin"
+            android:layout_margin="@dimen/dp16"
             android:id="@string/title_hello_world"
             android:text="@string/title_hello_world"
             />
         <com.stel.app.local.view.LanguageTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/fab_margin"
+            android:layout_margin="@dimen/dp16"
             android:id="@string/title_hello_world"
             android:text="@string/title_hello_world"
             />
         <com.stel.app.local.view.LanguageTextView
             android:layout_width="wrap_content"
-            android:layout_margin="@dimen/fab_margin"
+            android:layout_margin="@dimen/dp16"
             android:id="@string/title_hello_world"
             android:layout_height="wrap_content"
             android:text="@string/title_hello_world"
             />
-        s
+
     </LinearLayout>
 </LinearLayout>

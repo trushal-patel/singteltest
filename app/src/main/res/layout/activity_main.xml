@@ -70,6 +70,6 @@
             android:layout_height="wrap_content"
             android:onClick="doTranslate"
             android:tag="gu"
-            android:text="Gujarati" />
+            android:text="@string/gujarati" />
     </LinearLayout>
 </LinearLayout>

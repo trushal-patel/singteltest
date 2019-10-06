@@ -31,8 +31,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class LanguageUtility
-{
+public class LanguageUtility {
     private final static String localfileName = "stel_translation.csv";
 
     public String getCurrentTranslation() {
@@ -41,18 +40,17 @@ public class LanguageUtility
 
     private String currentTranslation = "en";
     private int currentTranslationPos = 0;
-    private HashMap<String,String> languageMap;
+    private HashMap<String, String> languageMap;
     private static LanguageUtility utility;
-    public static LanguageUtility getInstance()
-    {
-        if(utility==null)
-            utility=new LanguageUtility();
+
+    public static LanguageUtility getInstance() {
+        if (utility == null)
+            utility = new LanguageUtility();
         return utility;
     }
 
-    public boolean isLanguageSame(String newLanguageCode)
-    {
-        return  currentTranslation.equals(newLanguageCode);
+    public boolean isLanguageSame(String newLanguageCode) {
+        return currentTranslation.equals(newLanguageCode);
     }
 
     private boolean isConnected(Context context) {
@@ -60,11 +58,7 @@ public class LanguageUtility
             final ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
             assert cm != null;
             final NetworkInfo networkInfo = cm.getActiveNetworkInfo();
-            if (networkInfo != null && networkInfo.isAvailable() && networkInfo.isConnected()) {
-                return true;
-            } else {
-                return false;
-            }
+            return networkInfo != null && networkInfo.isAvailable() && networkInfo.isConnected();
         } catch (Exception e) {
 //// Lets try the server call for this case.
             return true;
@@ -72,19 +66,17 @@ public class LanguageUtility
     }
 
     private List csvArray;
-    private void parseFile(Context context, boolean fourceParse) throws FileNotFoundException
-    {
-        if(csvArray==null || fourceParse)
-        {
+
+    private void parseFile(Context context, boolean fourceParse) throws FileNotFoundException {
+        if (csvArray == null || fourceParse) {
             CSVFile file = new CSVFile(new File(context.getFilesDir(), localfileName));
             csvArray = file.read();
         }
     }
 
-    public void downloadFile(final Context context,final FileDownloadListner listner) {
+    public void downloadFile(final Context context, final FileDownloadListner listner) {
 
-        if(!isConnected(context))
-        {
+        if (!isConnected(context)) {
             // TODO , For production app we can have apecific error message for user.
             if (listner != null)
                 listner.downloadFailed();
@@ -105,34 +97,33 @@ public class LanguageUtility
             }
 
             @Override
-            public void onResponse(Call call, final Response response) throws IOException {
+            public void onResponse(Call call, final Response response) {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
                         //boolean isSuccess=false;
                         try {
                             if (response.isSuccessful()) {
+                                assert response.body() != null;
                                 InputStream in = response.body().byteStream();
                                 File file = new File(context.getFilesDir(), localfileName + ".temp");
-                                boolean results;
                                 if (file.exists()) {
-                                    results = file.delete();
+                                    file.delete();
                                 }
-                                results = file.createNewFile();
+                                file.createNewFile();
                                 FileOutputStream fos = new FileOutputStream(file);
                                 BufferedInputStream bis = new BufferedInputStream(in);
                                 byte[] buff = new byte[1024];
-                                int len = 0;
+                                int len;
                                 while ((len = bis.read(buff)) > 0) {
                                     fos.write(buff, 0, len);
                                 }
                                 bis.close();
                                 fos.close();
-                                results = file.renameTo(new File(context.getFilesDir(), localfileName));
+                                file.renameTo(new File(context.getFilesDir(), localfileName));
 
-                                if (listner != null && results)
-                                {
-                                    parseFile(context,true);
+                                if (listner != null) {
+                                    parseFile(context, true);
                                     listner.downloadSuccessful();
                                 }
                             } else {
@@ -152,8 +143,7 @@ public class LanguageUtility
         /// TODO handle all cases of server error responses
     }
 
-    private void setLocale(final Activity context, final String lang, final int pos)
-    {
+    private void setLocale(final Activity context, final String lang, final int pos) {
 //        new Handler().postDelayed(new Runnable() {
 //            @Override
 //            public void run() {
@@ -162,22 +152,21 @@ public class LanguageUtility
                 .setPositiveButton(R.string.btn_ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        applyLocal(context,lang,pos);
+                        applyLocal(context, lang, pos);
 //                        Intent lIntent = context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
 //                        lIntent.putExtra("language",lang);
 //                        lIntent.putExtra("language_pos",pos);
 //                        context.startActivity(lIntent);
 //                        context.sendBroadcast(new Intent(LocalBaseActivity.ACTION_RECREATE));
                     }
-                }).setNegativeButton(R.string.btn_cancel,null).create().show();
+                }).setNegativeButton(R.string.btn_cancel, null).create().show();
 //            }
 //        },500);
     }
 
-    public void applyLocal(Context context,String lang,int pos)
-    {
-        context=context.getApplicationContext();
-        Locale locale = new Locale (lang);
+    private void applyLocal(Context context, String lang, int pos) {
+        context = context.getApplicationContext();
+        Locale locale = new Locale(lang);
         Resources resources = context.getResources();
         Configuration configuration = resources.getConfiguration();
         configuration.locale = locale;
@@ -187,57 +176,49 @@ public class LanguageUtility
             context.getResources().updateConfiguration(configuration,
                     context.getResources().getDisplayMetrics());
         }
-        currentTranslation=lang;
-        currentTranslationPos=pos;
+        currentTranslation = lang;
+        currentTranslationPos = pos;
 
     }
 
-    public void doTranslate(Activity activity,String newLanguageCode)
-    {
-        if(currentTranslationPos==-1)
-        {
+    public void doTranslate(Activity activity, String newLanguageCode) {
+        if (currentTranslationPos == -1) {
             //Reset to english first.
-            currentTranslation="end";
-            currentTranslationPos=0;
+            currentTranslation = "end";
+            currentTranslationPos = 0;
             activity.sendBroadcast(new Intent(LanguageTextView.ACTION_TRANSLATE_RES));
 //            return;
         }
 
-        if(isFileDownloaded(activity))
-        {
+        if (isFileDownloaded(activity)) {
             try {
-                parseFile(activity,false);
+                parseFile(activity, false);
 
-            int newLanguagePosition=-1;
-            if(csvArray!=null && csvArray.size()>1) // atleast 2 rows needed, 1 for Title, 1 for translation
-            {
-                String[] titleRow = (String[]) csvArray.get(0);
-                int pos = 0;
-                for (String langCode : titleRow)
+                int newLanguagePosition = -1;
+                if (csvArray != null && csvArray.size() > 1) // atleast 2 rows needed, 1 for Title, 1 for translation
                 {
-                    if (newLanguageCode.equals(langCode))
-                        newLanguagePosition = pos;
-                    pos++;
+                    String[] titleRow = (String[]) csvArray.get(0);
+                    int pos = 0;
+                    for (String langCode : titleRow) {
+                        if (newLanguageCode.equals(langCode))
+                            newLanguagePosition = pos;
+                        pos++;
+                    }
                 }
-            }
-            if(newLanguagePosition!=-1)
-            {
-                languageMap = new HashMap<>();
-                String[] languageRow;
-                for (int i = 1; i < csvArray.size(); i++) //skip title
-                {
-                    languageRow = (String[]) csvArray.get(i);
-                    languageMap.put(languageRow[currentTranslationPos], languageRow[newLanguagePosition]);
+                if (newLanguagePosition != -1) {
+                    languageMap = new HashMap<>();
+                    String[] languageRow;
+                    for (int i = 1; i < csvArray.size(); i++) //skip title
+                    {
+                        languageRow = (String[]) csvArray.get(i);
+                        languageMap.put(languageRow[currentTranslationPos], languageRow[newLanguagePosition]);
+                    }
+                    currentTranslationPos = newLanguagePosition;
+                    currentTranslation = newLanguageCode;
+                    Toast.makeText(activity, "Applying remote localization", Toast.LENGTH_SHORT).show();
+                    activity.sendBroadcast(new Intent(LanguageTextView.ACTION_TRANSLATE));
+                    return;
                 }
-                currentTranslationPos=newLanguagePosition;
-                currentTranslation=newLanguageCode;
-                Toast.makeText(activity, "Applying remote localization", Toast.LENGTH_SHORT).show();
-                activity.sendBroadcast(new Intent(LanguageTextView.ACTION_TRANSLATE));
-                return;
-            } else
-            {
-                /// Ignore it, it will go to default fallback.
-            }
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
@@ -272,19 +253,17 @@ public class LanguageUtility
 //                    Toast.makeText(activity,"Languge Not available",Toast.LENGTH_SHORT).show();
 //                }
 //            } else
-            {
-                // Assuming app will have all locale language resources set.
-                currentTranslation=newLanguageCode;
-                currentTranslationPos=-1;
-                activity.sendBroadcast(new Intent(LanguageTextView.ACTION_TRANSLATE_RES));
+        {
+            // Assuming app will have all locale language resources set.
+            currentTranslation = newLanguageCode;
+            currentTranslationPos = -1;
+            activity.sendBroadcast(new Intent(LanguageTextView.ACTION_TRANSLATE_RES));
 //                setLocale(activity,newLanguageCode,-1);
-            }
+        }
     }
 
-    public String getTranslation(String plainText)
-    {
-        if(languageMap!=null && languageMap.containsKey(plainText))
-        {
+    public String getTranslation(String plainText) {
+        if (languageMap != null && languageMap.containsKey(plainText)) {
             return languageMap.get(plainText);
         }
         //No match...
@@ -292,26 +271,24 @@ public class LanguageUtility
     }
 
 
-    public boolean isFileDownloaded(Context context)
-    {
+    public boolean isFileDownloaded(Context context) {
         return new File(context.getFilesDir(), localfileName).exists();
     }
 
     public void destroy() {
 
-        currentTranslation=null;
-        currentTranslationPos=0;
+        currentTranslation = null;
+        currentTranslationPos = 0;
 
-        if(languageMap!=null)
-        {
+        if (languageMap != null) {
             languageMap.clear();
             languageMap = null;
         }
 
-        if(csvArray!=null) {
+        if (csvArray != null) {
             csvArray.clear();
             csvArray = null;
         }
-        utility=null;
+        utility = null;
     }
 }

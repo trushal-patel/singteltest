@@ -4,14 +4,11 @@ import android.util.Log;
 
 public class LogUtil
 {
-    boolean enableLogs=true;
-    public static void Log(String message)
-    {
-        Log.e("LogUtil",message);
-    }
+    private final static boolean  enableLogs=true;
 
     public static void Log(String title,String message)
     {
+        if(enableLogs)
         Log.e(title,message);
     }
 }

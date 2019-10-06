@@ -12,7 +12,6 @@ import android.os.LocaleList;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
-import androidx.annotation.StringRes;
 
 import com.stel.app.local.util.LanguageUtility;
 import com.stel.app.local.util.LogUtil;
@@ -31,15 +30,12 @@ public class LanguageTextView extends TextView
         @Override
         public void onReceive(Context context, Intent intent)
         {
-            if(intent.getAction().equals(ACTION_TRANSLATE_RES))
-            {
-
-
-                    try {
-                        int stringRes = (int) getId();
+            if(ACTION_TRANSLATE_RES.equals(intent.getAction()))
+            { try {
+                        int stringRes =  getId();
                         String newText = getDefaultString(context, stringRes, LanguageUtility.getInstance().getCurrentTranslation());
                         setText(newText);
-                    }catch(Exception e){}
+                    }catch(Exception ignored){}
 
 
             } else {
@@ -50,7 +46,7 @@ public class LanguageTextView extends TextView
     };
 
 
-    public static String getDefaultString(Context context, @StringRes int stringId,String language){
+    public static String getDefaultString(Context context,  int stringId,String language){
         Resources resources = context.getResources();
         Configuration configuration = new Configuration(resources.getConfiguration());
         Locale defaultLocale = new Locale(language);

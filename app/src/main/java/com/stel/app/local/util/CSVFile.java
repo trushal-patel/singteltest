@@ -21,10 +21,10 @@ class CSVFile
         this.file=file;
     }
 
-    List read() throws FileNotFoundException {
+    List<String[]> read() throws FileNotFoundException {
         InputStream inputStream=new FileInputStream(file);
 
-        List resultList = new ArrayList();
+        List<String[]> resultList = new ArrayList<>();
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         try {
             String csvLine;
@@ -33,14 +33,15 @@ class CSVFile
                 resultList.add(row);
             }
         }
-        catch (IOException ex) {
+        catch (IOException ex)
+        {
             throw new RuntimeException("Error in reading CSV file: "+ex);
         }
         finally {
             try {
                 inputStream.close();
             }
-            catch (IOException e) {
+            catch (Exception e) {
                 throw new RuntimeException("Error while closing input stream: "+e);
             }
         }
