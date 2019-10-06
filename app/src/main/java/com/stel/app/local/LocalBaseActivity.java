@@ -5,10 +5,8 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.stel.app.local.util.LanguageUtility;
 
 @SuppressLint("Registered")
