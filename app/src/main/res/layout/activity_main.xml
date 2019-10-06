@@ -61,9 +61,8 @@
 
             <LinearLayout
                 android:weightSum="3"
+                android:layout_marginTop="@dimen/dp16"
                 android:orientation="horizontal"
-                android:layout_margin="@dimen/dp8"
-
                 android:gravity="center_horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -71,7 +70,8 @@
             <EditText
                 android:layout_margin="@dimen/dp8"
                 android:id="@+id/edt_input1"
-                android:hint="@string/hint_input"
+                android:hint="@string/hint_number"
+                android:text="10"
                 android:inputType="numberDecimal"
                 android:layout_width="0dp"
                 android:layout_weight="1"
@@ -87,8 +87,9 @@
             <EditText
                 android:layout_margin="@dimen/dp8"
                 android:id="@+id/edt_input2"
-                android:hint="@string/hint_input"
+                android:hint="@string/hint_number"
                 android:layout_width="0dp"
+                android:text="10"
                 android:layout_weight="1"
                 android:inputType="numberDecimal"
                 android:layout_height="wrap_content"
@@ -116,6 +117,7 @@
             <EditText
                 android:id="@+id/edt_input"
                 android:hint="@string/hint_input"
+                android:text="Test"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 />

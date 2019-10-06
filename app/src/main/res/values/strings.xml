@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">App A</string>
-    <string name="action_settings">Settings</string>
     <string name="btn_title_submit">Submit</string>
     <string name="btn_title_calculate">Calculate</string>
     <string name="tv_title_please_enter_input_text_below">Please enter input text</string>
@@ -10,15 +9,15 @@
     <string name="btn_title_ok">OK</string>
     <string name="error_message_please_enter_the_text">* Please enter the text</string>
     <string name="error_message_please_valid_number">* Please enter valid number</string>
-
     <string name="tv_title_select_option">Select Option</string>
     <string name="tv_title_text_processing">Text Processing</string>
     <string name="tv_title_maths_operation">Maths Operation</string>
-
+    <string name="hint_number">number</string>
     <string-array name="array_math_operation">
         <item>+</item>
         <item>-</item>
         <item>*</item>
+        <item>/</item>
         <item>^</item>
         <item>%</item>
     </string-array>
