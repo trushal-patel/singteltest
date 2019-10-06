@@ -1,17 +1,17 @@
 package com.stel.app.local.util;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Handler;
-import android.util.DisplayMetrics;
+import android.os.Build;
 import android.widget.Toast;
 
-import com.stel.app.local.LocalBaseActivity;
 import com.stel.app.local.R;
 import com.stel.app.local.view.LanguageTextView;
 
@@ -34,6 +34,11 @@ import okhttp3.Response;
 public class LanguageUtility
 {
     private final static String localfileName = "stel_translation.csv";
+
+    public String getCurrentTranslation() {
+        return currentTranslation;
+    }
+
     private String currentTranslation = "en";
     private int currentTranslationPos = 0;
     private HashMap<String,String> languageMap;
@@ -94,7 +99,6 @@ public class LanguageUtility
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-
                 e.printStackTrace();
                 if (listner != null)
                     listner.downloadFailed();
@@ -148,36 +152,59 @@ public class LanguageUtility
         /// TODO handle all cases of server error responses
     }
 
-    private void setLocale(final Activity context, String lang, int pos)
+    private void setLocale(final Activity context, final String lang, final int pos)
     {
-        Locale myLocale = new Locale (lang);
-        Resources res = context.getResources();
-        DisplayMetrics dm = res.getDisplayMetrics();
-        Configuration conf = res.getConfiguration();
-        conf.locale = myLocale;
-        res.updateConfiguration(conf, dm);
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+        new AlertDialog.Builder(context).setMessage(R.string.mesaage_app_restart)
+                .setCancelable(true)
+                .setPositiveButton(R.string.btn_ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        applyLocal(context,lang,pos);
+//                        Intent lIntent = context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
+//                        lIntent.putExtra("language",lang);
+//                        lIntent.putExtra("language_pos",pos);
+//                        context.startActivity(lIntent);
+//                        context.sendBroadcast(new Intent(LocalBaseActivity.ACTION_RECREATE));
+                    }
+                }).setNegativeButton(R.string.btn_cancel,null).create().show();
+//            }
+//        },500);
+    }
+
+    public void applyLocal(Context context,String lang,int pos)
+    {
+        context=context.getApplicationContext();
+        Locale locale = new Locale (lang);
+        Resources resources = context.getResources();
+        Configuration configuration = resources.getConfiguration();
+        configuration.locale = locale;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            context.createConfigurationContext(configuration);
+        } else {
+            context.getResources().updateConfiguration(configuration,
+                    context.getResources().getDisplayMetrics());
+        }
         currentTranslation=lang;
         currentTranslationPos=pos;
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                context.sendBroadcast(new Intent(LocalBaseActivity.ACTION_RECREATE));
-            }
-        },100);
+
     }
 
     public void doTranslate(Activity activity,String newLanguageCode)
     {
         if(currentTranslationPos==-1)
         {
-            Toast.makeText(activity,"Last language change was from resource. Resetting it to English",Toast.LENGTH_SHORT).show();
-            setLocale(activity,"en",0);
-            return;
+            //Reset to english first.
+            currentTranslation="end";
+            currentTranslationPos=0;
+            activity.sendBroadcast(new Intent(LanguageTextView.ACTION_TRANSLATE_RES));
+//            return;
         }
 
         if(isFileDownloaded(activity))
         {
-
             try {
                 parseFile(activity,false);
 
@@ -204,6 +231,7 @@ public class LanguageUtility
                 }
                 currentTranslationPos=newLanguagePosition;
                 currentTranslation=newLanguageCode;
+                Toast.makeText(activity, "Applying remote localization", Toast.LENGTH_SHORT).show();
                 activity.sendBroadcast(new Intent(LanguageTextView.ACTION_TRANSLATE));
                 return;
             } else
@@ -215,10 +243,12 @@ public class LanguageUtility
             }
         }
 
+        Toast.makeText(activity, "Applying local resource localization", Toast.LENGTH_SHORT).show();
+
 
         /// Fallback Conditions
 
-//            Not working perperly
+//            Validation Not working perperly
 //            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N)
 //            {
 //                LocaleList localeList = activity.getResources().getConfiguration().getLocales();
@@ -244,7 +274,10 @@ public class LanguageUtility
 //            } else
             {
                 // Assuming app will have all locale language resources set.
-                setLocale(activity,newLanguageCode,-1);
+                currentTranslation=newLanguageCode;
+                currentTranslationPos=-1;
+                activity.sendBroadcast(new Intent(LanguageTextView.ACTION_TRANSLATE_RES));
+//                setLocale(activity,newLanguageCode,-1);
             }
     }
 
@@ -262,5 +295,23 @@ public class LanguageUtility
     public boolean isFileDownloaded(Context context)
     {
         return new File(context.getFilesDir(), localfileName).exists();
+    }
+
+    public void destroy() {
+
+        currentTranslation=null;
+        currentTranslationPos=0;
+
+        if(languageMap!=null)
+        {
+            languageMap.clear();
+            languageMap = null;
+        }
+
+        if(csvArray!=null) {
+            csvArray.clear();
+            csvArray = null;
+        }
+        utility=null;
     }
 }

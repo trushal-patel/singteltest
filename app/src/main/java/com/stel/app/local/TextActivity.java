@@ -3,9 +3,10 @@ package com.stel.app.local;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
+
+import com.stel.app.local.util.LanguageUtility;
 
 public class TextActivity extends LocalBaseActivity {
 
@@ -17,18 +18,24 @@ public class TextActivity extends LocalBaseActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        if(savedInstanceState==null || !savedInstanceState.containsKey("isRecreate"))
+        if(savedInstanceState==null)
         {
-            Toast.makeText(this, "This screen will stay in background. Opening main activity in 5 seconds",Toast.LENGTH_SHORT).show();
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run()
                 {
-                    if(!isFinishing() && !isDestroyed()) {
+                    if(!isFinishing() && !isDestroyed() && MainActivity.instance==null) {
                         startActivity(new Intent(getBaseContext(), MainActivity.class));
                     }
                 }
-            }, 5000);
+            }, 2000);
         }
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        LanguageUtility.getInstance().destroy();
+        super.onDestroy();
     }
 }

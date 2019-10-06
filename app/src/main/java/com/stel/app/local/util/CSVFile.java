@@ -10,15 +10,18 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CSVFile
+/**
+ * Third party class.
+ */
+class CSVFile
 {
-    File file;
-    public CSVFile(File file)
+    private File file;
+    CSVFile(File file)
     {
         this.file=file;
     }
 
-    public List read() throws FileNotFoundException {
+    List read() throws FileNotFoundException {
         InputStream inputStream=new FileInputStream(file);
 
         List resultList = new ArrayList();

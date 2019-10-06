@@ -1,10 +1,7 @@
 package com.stel.app.local;
 
 import android.annotation.SuppressLint;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -17,33 +14,32 @@ import com.stel.app.local.util.LanguageUtility;
 @SuppressLint("Registered")
 public class LocalBaseActivity extends AppCompatActivity
 {
-
-
-    public static final String ACTION_RECREATE="com.stel.app.ACTION_RECREATE";
+//    public static final String ACTION_RECREATE="com.stel.app.ACTION_RECREATE";
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(ACTION_RECREATE);
-        registerReceiver(receiver,filter);
+//        IntentFilter filter = new IntentFilter();
+//        filter.addAction(ACTION_RECREATE);
+//        registerReceiver(receiver,filter);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(receiver);
+//        unregisterReceiver(receiver);
     }
 
-    BroadcastReceiver receiver=new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            ///Local has been changed. Recreate activity to apply it
-            Bundle b=new Bundle();
-            b.putString("isRecreate","1");
-            onSaveInstanceState(b);
-            recreate();
-        }
-    };
+//    BroadcastReceiver receiver=new BroadcastReceiver() {
+//        @Override
+//        public void onReceive(Context context, Intent intent) {
+//            ///Local has been changed. Recreate activity to apply it
+////            Bundle b=new Bundle();
+////            b.putString("isRecreate","1");
+////            onSaveInstanceState(b);
+////            finish();
+////            recreate();
+//        }
+//    };
 
     //    public void traverseChild(View root, Context c,String targetLanguage,boolean isCalledFromRootedView)
 //    {
@@ -117,13 +113,6 @@ public class LocalBaseActivity extends AppCompatActivity
 //    }
 
 
-
-
-
-
-
-
-
     public void doTranslate(View v)
     {
         LanguageUtility util=LanguageUtility.getInstance();
@@ -140,5 +129,23 @@ public class LocalBaseActivity extends AppCompatActivity
         }
     }
 
+    ProgressDialog mProgressDialog;
+    void showProgressDialog()
+    {
+        // May be previous progress-bar still active
+        hideProgressDialog();
 
+        mProgressDialog = ProgressDialog.show(this, "", getString(R.string.message_progress_downloding_file));
+    }
+
+    void hideProgressDialog()
+    {
+        try {
+            if (mProgressDialog != null) {
+                mProgressDialog.dismiss();
+                mProgressDialog = null;
+            }
+        }catch(Exception ignored){
+        }
+    }
 }

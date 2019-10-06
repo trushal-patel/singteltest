@@ -19,54 +19,57 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <com.stel.app.local.view.LanguageTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/title_hello_world"
-        />
-    <!--<com.stel.app.local.view.LanguageTextView-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+
+        <com.stel.app.local.view.LanguageTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/title_hello_world"
+            android:id="@string/title_hello_world"/>
+        <!--<com.stel.app.local.view.LanguageTextView-->
         <!--android:layout_width="wrap_content"-->
         <!--android:layout_height="wrap_content"-->
         <!--android:text="@string/title_hello_world1"-->
         <!--/>-->
-    <Button
-        android:tag="en"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="doTranslate"
-        android:text="@string/english"
-        />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="doTranslate"
+            android:tag="en"
+            android:text="@string/english" />
 
-    <Button
-        android:tag="de"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/dutch"
-        android:onClick="doTranslate"
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="doTranslate"
+            android:tag="de"
+            android:text="@string/dutch"
+            />
 
-        />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="doTranslate"
+            android:tag="hi"
+            android:text="@string/hindi" />
 
-    <Button
-        android:tag="hi"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hindi"
-        android:onClick="doTranslate"
-        />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="doTranslate"
+            android:tag="ja"
+            android:text="@string/japanese" />
 
-    <Button
-        android:tag="ja"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/japanese"
-        android:onClick="doTranslate"
-        />
-
-    <Button
-        android:tag="gu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Gujarati"
-        android:onClick="doTranslate"
-        />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="doTranslate"
+            android:tag="gu"
+            android:text="Gujarati" />
+    </LinearLayout>
 </LinearLayout>

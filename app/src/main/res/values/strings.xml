@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name" translatable="false">App Localization</string>
     <string name="title_hello_world">Hello World</string>
-    <string name="title_hello_world1">Hello World 1</string>
     <string name="download_file" translatable="false">Download File</string>
+    <string name="mesaage_app_restart" translatable="false">Language change requires relaunching the app.</string>
+    <string name="btn_ok" translatable="false">OK</string>
+    <string name="btn_cancel" translatable="false">Cancel</string>
+    <string name="message_progress_downloding_file" translatable="false">Downloading File...</string>
 </resources>

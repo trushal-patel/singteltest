@@ -5,26 +5,66 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.os.Build;
+import android.os.LocaleList;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
+import androidx.annotation.StringRes;
+
 import com.stel.app.local.util.LanguageUtility;
 import com.stel.app.local.util.LogUtil;
+
+import java.util.Locale;
 
 @SuppressLint("AppCompatCustomView")
 public class LanguageTextView extends TextView
 {
 
     public static String ACTION_TRANSLATE="com.app.ACTION_TRANSLATE";
+    public static String ACTION_TRANSLATE_RES="com.app.ACTION_TRANSLATE_RES";
+
 
     BroadcastReceiver receiver=new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent)
         {
-            setText(LanguageUtility.getInstance().getTranslation(getText().toString()));
+            if(intent.getAction().equals(ACTION_TRANSLATE_RES))
+            {
+
+
+                    try {
+                        int stringRes = (int) getId();
+                        String newText = getDefaultString(context, stringRes, LanguageUtility.getInstance().getCurrentTranslation());
+                        setText(newText);
+                    }catch(Exception e){}
+
+
+            } else {
+                setText(LanguageUtility.getInstance().getTranslation(getText().toString()));
+            }
             LogUtil.Log("LanguageTextView","onReceive"+intent.getAction());
         }
     };
+
+
+    public static String getDefaultString(Context context, @StringRes int stringId,String language){
+        Resources resources = context.getResources();
+        Configuration configuration = new Configuration(resources.getConfiguration());
+        Locale defaultLocale = new Locale(language);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            LocaleList localeList = new LocaleList(defaultLocale);
+            configuration.setLocales(localeList);
+            return context.createConfigurationContext(configuration).getString(stringId);
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1){
+            configuration.setLocale(defaultLocale);
+            return context.createConfigurationContext(configuration).getString(stringId);
+        }
+        return context.getString(stringId);
+    }
+
 
     Context context;
     public LanguageTextView(Context context) {
@@ -58,6 +98,7 @@ public class LanguageTextView extends TextView
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(LanguageTextView.ACTION_TRANSLATE);
+        filter.addAction(LanguageTextView.ACTION_TRANSLATE_RES);
         context.registerReceiver(receiver,filter);
     }
 }

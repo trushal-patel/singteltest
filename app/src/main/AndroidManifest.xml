@@ -15,7 +15,8 @@
         <activity
             android:name=".TextActivity"
             android:label="Test Screen"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:configChanges="orientation|screenSize"
+             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -23,7 +24,8 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:label="Test Screen"
+            android:label="Language Setting"
+            android:configChanges="orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar">
             <!--<intent-filter>-->
                 <!--<action android:name="android.intent.action.MAIN" />-->
@@ -31,5 +33,4 @@
             <!--</intent-filter>-->
         </activity>
     </application>
-
 </manifest>

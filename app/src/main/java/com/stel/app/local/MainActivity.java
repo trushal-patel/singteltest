@@ -1,6 +1,5 @@
 package com.stel.app.local;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,11 +12,13 @@ import androidx.appcompat.widget.Toolbar;
 import com.stel.app.local.util.FileDownloadListner;
 import com.stel.app.local.util.LanguageUtility;
 
-public class MainActivity extends LocalBaseActivity {
+public class  MainActivity extends LocalBaseActivity {
 
+    public static Object instance;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        instance=this;
         setContentView(R.layout.activity_main);
         if(!(LanguageUtility.getInstance().isFileDownloaded(this)))
         {
@@ -37,11 +38,8 @@ public class MainActivity extends LocalBaseActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item)
     {
-        switch (item.getItemId())
-        {
-            case R.id.menu_download:
-                attemptFileDownload();
-                break;
+        if (item.getItemId() == R.id.menu_download) {
+            attemptFileDownload();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -77,27 +75,11 @@ public class MainActivity extends LocalBaseActivity {
         });
     }
 
-    ProgressDialog mProgressDialog;
-    void showProgressDialog()
-    {
-        if(mProgressDialog!=null) {
-            // May be previous progress-bar still active
-            hideProgressDialog();
-        }
-        mProgressDialog = ProgressDialog.show(MainActivity.this, "", "Downloading File...");
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        instance=null;
     }
-
-    void hideProgressDialog()
-    {
-        try {
-            if (mProgressDialog != null) {
-                mProgressDialog.dismiss();
-                mProgressDialog = null;
-            }
-        }catch(Exception e){
-        }
-    }
-
-
-
 }
