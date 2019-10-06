@@ -7,40 +7,25 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;s
 
 import com.stel.app.local.util.LanguageUtility;
 
 @SuppressLint("Registered")
 public class LocalBaseActivity extends AppCompatActivity
 {
-//    public static final String ACTION_RECREATE="com.stel.app.ACTION_RECREATE";
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        IntentFilter filter = new IntentFilter();
-//        filter.addAction(ACTION_RECREATE);
-//        registerReceiver(receiver,filter);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        unregisterReceiver(receiver);
     }
 
-//    BroadcastReceiver receiver=new BroadcastReceiver() {
-//        @Override
-//        public void onReceive(Context context, Intent intent) {
-//            ///Local has been changed. Recreate activity to apply it
-////            Bundle b=new Bundle();
-////            b.putString("isRecreate","1");
-////            onSaveInstanceState(b);
-////            finish();
-////            recreate();
-//        }
-//    };
 
+    //TODO clear it.  Kept it For Reference
     //    public void traverseChild(View root, Context c,String targetLanguage,boolean isCalledFromRootedView)
 //    {
 //        int newLangPos = -1;
@@ -113,6 +98,10 @@ public class LocalBaseActivity extends AppCompatActivity
 //    }
 
 
+    /**
+     * MEthod which actually handles all button clicks.
+     * @param v Button Views
+     */
     public void doTranslate(View v)
     {
         LanguageUtility util=LanguageUtility.getInstance();

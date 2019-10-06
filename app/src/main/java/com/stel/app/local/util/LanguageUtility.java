@@ -31,52 +31,81 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class LanguageUtility {
-    private final static String localfileName = "stel_translation.csv";
+public class LanguageUtility
+{
 
-    public String getCurrentTranslation() {
-        return currentTranslation;
-    }
+    private final static String localFileName = "stel_translation.csv";
 
     private String currentTranslation = "en";
     private int currentTranslationPos = 0;
-    private HashMap<String, String> languageMap;
-    private static LanguageUtility utility;
 
+
+    private HashMap<String, String> languageMap;
+
+    private static LanguageUtility utility;
     public static LanguageUtility getInstance() {
         if (utility == null)
             utility = new LanguageUtility();
         return utility;
     }
 
+    /**
+     * Get current translation lancuage of app
+     * @return language code
+     */
+    public String getCurrentTranslation() {
+        return currentTranslation;
+    }
+
+    /**
+     * Use this method to Check if new & previous languages are same.
+     *
+     * @param newLanguageCode
+     * @return true if both languages are same. false otherwise
+     */
     public boolean isLanguageSame(String newLanguageCode) {
         return currentTranslation.equals(newLanguageCode);
     }
 
-    private boolean isConnected(Context context) {
+    private boolean isNetworkConnected(Context context) {
         try {
             final ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
             assert cm != null;
             final NetworkInfo networkInfo = cm.getActiveNetworkInfo();
             return networkInfo != null && networkInfo.isAvailable() && networkInfo.isConnected();
         } catch (Exception e) {
-//// Lets try the server call for this case.
+            //// Lets try the server call for this case.
             return true;
         }
     }
 
+    /**
+     *  Lets save it. So don't reuire to parse file everytime. For production apps we can use database instead.
+     */
     private List csvArray;
 
+    /**
+     *
+     * Parse downloaded CSV file
+     * @param context
+     * @param fourceParse
+     * @throws FileNotFoundException
+     */
     private void parseFile(Context context, boolean fourceParse) throws FileNotFoundException {
         if (csvArray == null || fourceParse) {
-            CSVFile file = new CSVFile(new File(context.getFilesDir(), localfileName));
+            CSVFile file = new CSVFile(new File(context.getFilesDir(), localFileName));
             csvArray = file.read();
         }
     }
 
+    /**
+     * Download CSV File from server.
+     * @param context
+     * @param listner
+     */
     public void downloadFile(final Context context, final FileDownloadListner listner) {
 
-        if (!isConnected(context)) {
+        if (!isNetworkConnected(context)) {
             // TODO , For production app we can have apecific error message for user.
             if (listner != null)
                 listner.downloadFailed();
@@ -106,7 +135,7 @@ public class LanguageUtility {
                             if (response.isSuccessful()) {
                                 assert response.body() != null;
                                 InputStream in = response.body().byteStream();
-                                File file = new File(context.getFilesDir(), localfileName + ".temp");
+                                File file = new File(context.getFilesDir(), localFileName + ".temp");
                                 if (file.exists()) {
                                     file.delete();
                                 }
@@ -120,7 +149,7 @@ public class LanguageUtility {
                                 }
                                 bis.close();
                                 fos.close();
-                                file.renameTo(new File(context.getFilesDir(), localfileName));
+                                file.renameTo(new File(context.getFilesDir(), localFileName));
 
                                 if (listner != null) {
                                     parseFile(context, true);
@@ -143,6 +172,13 @@ public class LanguageUtility {
         /// TODO handle all cases of server error responses
     }
 
+    /**
+     * Set local languge from source.
+     *
+     * @param context
+     * @param lang  languge code
+     * @param pos selected languge position. always -1 for suchcases.
+     */
     private void setLocale(final Activity context, final String lang, final int pos) {
 //        new Handler().postDelayed(new Runnable() {
 //            @Override
@@ -152,35 +188,32 @@ public class LanguageUtility {
                 .setPositiveButton(R.string.btn_ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        applyLocal(context, lang, pos);
-//                        Intent lIntent = context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
-//                        lIntent.putExtra("language",lang);
-//                        lIntent.putExtra("language_pos",pos);
-//                        context.startActivity(lIntent);
-//                        context.sendBroadcast(new Intent(LocalBaseActivity.ACTION_RECREATE));
+                        Locale locale = new Locale(lang);
+                        Resources resources = context.getResources();
+                        Configuration configuration = resources.getConfiguration();
+                        configuration.locale = locale;
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                            context.createConfigurationContext(configuration);
+                        } else {
+                            context.getResources().updateConfiguration(configuration,
+                                    context.getResources().getDisplayMetrics());
+                        }
+                        currentTranslation = lang;
+                        currentTranslationPos = pos;
+                        //Restart Activity.
                     }
                 }).setNegativeButton(R.string.btn_cancel, null).create().show();
 //            }
 //        },500);
     }
 
-    private void applyLocal(Context context, String lang, int pos) {
-        context = context.getApplicationContext();
-        Locale locale = new Locale(lang);
-        Resources resources = context.getResources();
-        Configuration configuration = resources.getConfiguration();
-        configuration.locale = locale;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            context.createConfigurationContext(configuration);
-        } else {
-            context.getResources().updateConfiguration(configuration,
-                    context.getResources().getDisplayMetrics());
-        }
-        currentTranslation = lang;
-        currentTranslationPos = pos;
 
-    }
-
+    /**
+     *  USe this function to apply translation.
+     *
+     * @param activity
+     * @param newLanguageCode
+     */
     public void doTranslate(Activity activity, String newLanguageCode) {
         if (currentTranslationPos == -1) {
             //Reset to english first.
@@ -262,6 +295,11 @@ public class LanguageUtility {
         }
     }
 
+    /**
+     * Get translation from downloaded file.
+     * @param plainText
+     * @return
+     */
     public String getTranslation(String plainText) {
         if (languageMap != null && languageMap.containsKey(plainText)) {
             return languageMap.get(plainText);
@@ -271,10 +309,19 @@ public class LanguageUtility {
     }
 
 
+    /**
+     * Check if remote CSV file is downloaded.
+     * @param context
+     * @return
+     */
     public boolean isFileDownloaded(Context context) {
-        return new File(context.getFilesDir(), localfileName).exists();
+        return new File(context.getFilesDir(), localFileName).exists();
     }
 
+    /**
+     * Clear singleton instance.
+     *
+     */
     public void destroy() {
 
         currentTranslation = null;

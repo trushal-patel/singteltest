@@ -35,7 +35,7 @@ public class LanguageTextView extends TextView
                         int stringRes =  getId();
                         String newText = getDefaultString(context, stringRes, LanguageUtility.getInstance().getCurrentTranslation());
                         setText(newText);
-                    }catch(Exception ignored){}
+                }catch(Exception ignored){}
 
 
             } else {
