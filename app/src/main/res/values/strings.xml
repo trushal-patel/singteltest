@@ -7,4 +7,6 @@
     <string name="btn_cancel" translatable="false">Cancel</string>
     <string name="message_progress_downloding_file" translatable="false">Downloading File...</string>
     <string name="title_message" translatable="false">This is additional test screen will stay in background. Main Screen will open on this screen.</string>
+    <string name="message_resource_localization">Language Not found. Applying resource localization</string>
+    <string name="message_doc_localization">Language Found: Applying remote localization</string>
 </resources>

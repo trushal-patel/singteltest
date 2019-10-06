@@ -215,7 +215,7 @@ public class LanguageUtility {
                     }
                     currentTranslationPos = newLanguagePosition;
                     currentTranslation = newLanguageCode;
-                    Toast.makeText(activity, "Applying remote localization", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity,activity.getString(R.string.message_doc_localization), Toast.LENGTH_SHORT).show();
                     activity.sendBroadcast(new Intent(LanguageTextView.ACTION_TRANSLATE));
                     return;
                 }
@@ -224,7 +224,7 @@ public class LanguageUtility {
             }
         }
 
-        Toast.makeText(activity, "Applying local resource localization", Toast.LENGTH_SHORT).show();
+        Toast.makeText(activity, R.string.message_resource_localization, Toast.LENGTH_SHORT).show();
 
 
         /// Fallback Conditions
