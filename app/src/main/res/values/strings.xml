@@ -13,6 +13,7 @@
     <string name="tv_title_text_processing">Text Processing</string>
     <string name="tv_title_maths_operation">Maths Operation</string>
     <string name="hint_number">number</string>
+    <string name="message_install_b">Please install application B.</string>
     <string-array name="array_math_operation">
         <item>+</item>
         <item>-</item>

@@ -55,7 +55,15 @@ public class MainActivity extends AppCompatActivity {
 
                 Intent intent=new Intent(ACTION_PROCESS_TEXT);
                 intent.putExtra(EXTRA_PARAM_INPUT1,input);
-                startActivityForResult(intent,REQUEST_PROCESS_TEXT);
+                if(intent.resolveActivity(getPackageManager())!=null)
+                {
+                    startActivityForResult(intent,REQUEST_PROCESS_TEXT);
+                } else
+                {
+                    new AlertDialog.Builder(MainActivity.this).setMessage(getString(R.string.message_install_b))
+                            .setPositiveButton(R.string.btn_title_ok,null).create().show();
+
+                }
             }
         });
 
@@ -85,7 +93,15 @@ public class MainActivity extends AppCompatActivity {
                     expression=input1+ selectedOperation +input2+"=";
                     Intent intent = new Intent(ACTION_MATH_OPERATION);
                     intent.putExtra(EXTRA_PARAM_INPUT1, input1+ URLEncoder.encode(selectedOperation)+input2);
-                    startActivityForResult(intent, REQUEST_PROCESS_MATH);
+                    if(intent.resolveActivity(getPackageManager())!=null)
+                    {
+                        startActivityForResult(intent, REQUEST_PROCESS_MATH);
+                    } else
+                    {
+                        new AlertDialog.Builder(MainActivity.this).setMessage(getString(R.string.message_install_b))
+                                .setPositiveButton(R.string.btn_title_ok,null).create().show();
+                    }
+
                 }
             }
         });
